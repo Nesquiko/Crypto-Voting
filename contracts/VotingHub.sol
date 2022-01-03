@@ -4,16 +4,10 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "./VotingSession.sol";
-import "./VoteToken.sol";
 
 contract VotingHub {
     string[] public votingSessionSymbols;
     mapping(string => address) public addressesOfVotingSessions;
-    IERC20 public voteToken;
-
-    constructor() {
-        voteToken = new VoteToken();
-    }
 
     function createVotingSession(
         string memory symbol,
@@ -25,10 +19,10 @@ contract VotingHub {
             symbol,
             start,
             end,
-            numOfVotes,
-            address(voteToken),
-            address(this)
+            numOfVotes
         );
+
+        newVotingSession.transferOwnership(msg.sender);
 
         votingSessionSymbols.push(symbol);
         addressesOfVotingSessions[symbol] = address(newVotingSession);
