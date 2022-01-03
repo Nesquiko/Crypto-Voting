@@ -20,7 +20,7 @@ contract VotingHub {
         uint256 start,
         uint256 end,
         uint8 numOfVotes
-    ) public {
+    ) public returns (address) {
         VotingSession newVotingSession = new VotingSession(
             symbol,
             start,
@@ -32,6 +32,8 @@ contract VotingHub {
 
         votingSessionSymbols.push(symbol);
         addressesOfVotingSessions[symbol] = address(newVotingSession);
+
+        return address(newVotingSession);
     }
 
     function getAllVotinSessionsSymbols()
