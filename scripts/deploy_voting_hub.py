@@ -1,8 +1,7 @@
-import time
-from brownie import network, VotingHub
+from brownie import VotingHub
 from brownie.network.contract import ProjectContract
-from brownie.network.transaction import TransactionReceipt
-from scripts.util import get_account, from_account
+
+from scripts.util import from_account, get_account
 
 
 def deploy_voting_hub():

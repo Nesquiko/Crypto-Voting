@@ -1,9 +1,10 @@
-from brownie.network import account
-from brownie.network.transaction import TransactionReceipt
-from brownie.network.contract import ContractTx, ProjectContract
-from scripts.util import from_account, get_account
-from scripts.deploy_voting_hub import deploy_voting_hub
 import time
+
+from brownie.network.contract import ProjectContract
+from brownie.network.transaction import TransactionReceipt
+
+from scripts.deploy_voting_hub import deploy_voting_hub
+from scripts.util import from_account, get_account
 
 
 def test_create_voting_session():

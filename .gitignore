@@ -4,3 +4,10 @@ __pycache__
 .hypothesis/
 build/
 reports/
+
+*out
+
+.flake8
+.isort.cfg
+.markdownlint.yaml
+.prettierrc
