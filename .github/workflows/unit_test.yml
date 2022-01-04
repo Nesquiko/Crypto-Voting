@@ -28,17 +28,14 @@ jobs:
                   node-version: "16"
                   check-latest: true
 
-            - name: Test Node
-              run: node --version
-#            - name: Cache dependencies
-#              uses: actions/cache@v2
-#              with:
-#                  path: ~/.npm
-#                  key: npm-${{ hashFiles('package-lock.json') }}
-#                  restore-keys: npm-
+            #            - name: Cache dependencies
+            #              uses: actions/cache@v2
+            #              with:
+            #                  path: ~/.npm
+            #                  key: npm-${{ hashFiles('package-lock.json') }}
+            #                  restore-keys: npm-
 
-#            - name: Install yarn
-#              run: |
-#                  npm install --global yarn
-#                  yarn --version
-#
+            - name: Install yarn
+              run: |
+                  npm install --global yarn
+                  yarn --version
