@@ -38,6 +38,9 @@ jobs:
                   yarn global add ganache-cli
                   ganache-cli --version
 
+            - name: Install Solidity Compiler
+              run: npm install -g solc
+
             - name: Setup Python
               uses: actions/setup-python@v2
               with:
