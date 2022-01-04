@@ -39,7 +39,7 @@ jobs:
                   ganache-cli --version
 
             - name: Install Solidity Compiler
-              run: sudo apt-get install solc
+              run: sudo snap install solc
 
             - name: Setup Python
               uses: actions/setup-python@v2
