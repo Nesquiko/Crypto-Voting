@@ -1,2 +1,1 @@
 eth-brownie>=1.17.2
-py-solc-x==1.1.1
