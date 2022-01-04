@@ -50,5 +50,5 @@ jobs:
                   pipx install eth-brownie
 
             - name: Brownie Test
-            - run: |
+              run: |
                   brownie test
