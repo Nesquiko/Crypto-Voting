@@ -39,3 +39,8 @@ jobs:
               run: |
                   npm install --global yarn
                   yarn --version
+
+            - name: Install Ganache-cli
+              run: |
+                  yarn global add ganache-cli
+                  ganache-cli --version
