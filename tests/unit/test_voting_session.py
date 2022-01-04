@@ -1,4 +1,5 @@
 import time
+import brownie
 import pytest
 
 from brownie.network.contract import Contract, ProjectContract
@@ -84,4 +85,25 @@ def test_add_choice_from_non_owner():
         tx = voting_session.addChoice(choice, from_account(non_owner))
 
 
-# TODO test time ended
+def test_add_choice_after_end():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) - 100
+    end = start - 50
+    num_votes = 2
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+
+    with brownie.reverts("This voting session already ended."):
+        tx = voting_session.addChoice(choice, from_account(account))
