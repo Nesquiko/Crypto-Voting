@@ -57,7 +57,9 @@ def test_add_choice_from_owner():
     tx.wait(1)
 
     assert voting_session.choices(0, from_account(account)) == choice
-    assert voting_session.numOfVotesPerChoice(choice, from_account(account)) == 0
+    assert (
+        voting_session.numOfVotesPerChoice(choice, from_account(account)) == 1
+    )  # Only testing Github Actions
 
 
 def test_add_choice_from_non_owner():

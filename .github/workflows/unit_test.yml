@@ -39,12 +39,13 @@ jobs:
                   ganache-cli --version
 
             - name: Install Solidity Compiler
-              run: npm install -g solc
+              run: sudo apt-get install solc
 
             - name: Setup Python
               uses: actions/setup-python@v2
               with:
                   python-version: "3.8"
+                  cache: "pip"
 
             - name: Install Brownie
               run: |
