@@ -38,19 +38,12 @@ jobs:
                   yarn global add ganache-cli
                   ganache-cli --version
 
-            - name: Install Solidity Compiler
-              run: sudo snap install solc
-
             - name: Setup Python
               uses: actions/setup-python@v2
               with:
                   python-version: "3.8"
                   cache: "pip"
             - run: pip install -r requirements.txt
-
-            - name: Install Brownie
-              run: |
-                  pip install eth-brownie
 
             - name: Create .env file
               run: |
