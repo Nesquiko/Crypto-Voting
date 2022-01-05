@@ -10,9 +10,13 @@ contract VotingSession is Ownable {
     string public symbol;
     uint256 public start;
     uint256 public end;
+
     uint8 public numOfVotesPerUser;
+    mapping(address => uint8) public voterPerUsesr;
 
     string[] public choices;
+    // more efficient than array, when looking if it contains certain keys
+    mapping(string => bool) public choicesMap;
     mapping(string => uint24) public numOfVotesPerChoice;
 
     constructor(
@@ -33,6 +37,7 @@ contract VotingSession is Ownable {
         require(block.timestamp < end, "This voting session already ended.");
 
         choices.push(choice);
+        choicesMap[choice] = true;
         numOfVotesPerChoice[choice] = 0;
     }
 
