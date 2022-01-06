@@ -265,3 +265,117 @@ def test_vote_exceeded_num_of_votes_per_user_second_vote():
 
     with brownie.reverts("Exceeded number of votes per user."):
         voting_session.vote(choice, num_of_votes_owner, from_account(account))
+
+
+def test_get_results():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time())
+    end = start + 10000000
+    num_votes = 3
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+    tx = voting_session.addChoice(choice, from_account(account))
+    tx.wait(1)
+
+    choice2 = "Donald Trump"
+    tx = voting_session.addChoice(choice2, from_account(account))
+    tx.wait(1)
+
+    num_of_votes_owner = 2
+    tx_vote: TransactionReceipt = voting_session.vote(
+        choice, num_of_votes_owner, from_account(account)
+    )
+    tx_vote.wait(1)
+
+    non_owner = get_account(index=1)
+    num_of_votes_non_owner = 1
+    tx_vote: TransactionReceipt = voting_session.vote(
+        choice2, num_of_votes_non_owner, from_account(non_owner)
+    )
+    tx_vote.wait(1)
+
+    expected = (
+        f"{choice} => {num_of_votes_owner} | {choice2} => {num_of_votes_non_owner} | "
+    )
+    actual = voting_session.getResults(from_account(account))
+
+    assert actual == expected, f"\nResults expected: {expected}\nBut were: {actual}"
+
+
+def test_get_results_lot_of_choices():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time())
+    end = start + 10000000
+    choices = [
+        "Joe Biden",
+        "Donald Trump",
+        "Kanye West",
+        "Howie Hawkins",
+        "Jo Jorgensen",
+        "Bernie Sanders",
+        "Elizabeth Warren",
+        "Michael Bloomberg",
+        "Kamala Harris",
+        "Pete Buttigieg",
+        "Amy Klobuchar",
+        "Andrew Yang",
+        "Julián Castro",
+        "Cory Booker",
+        "Joe Walsh",
+        "John Delaney",
+        "Michael Bennet",
+        "Deval Patrick",
+        "Tom Steyer",
+        "William Weld",
+    ]
+    num_votes = len(choices)
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    for choice in choices:
+        tx = voting_session.addChoice(choice, from_account(account))
+        tx.wait(1)
+
+    for i in range(len(choices)):
+        tx_vote: TransactionReceipt = voting_session.vote(
+            choices[i],
+            10,
+            from_account(get_account(index=(i % 10))),
+        )
+
+    expected = (
+        "Joe Biden => 10 | Donald Trump => 10 | Kanye West => 10 |"
+        + " Howie Hawkins => 10 | Jo Jorgensen => 10 | Bernie Sanders => 10 |"
+        + " Elizabeth Warren => 10 | Michael Bloomberg => 10 | Kamala Harris =>"
+        + " 10 | Pete Buttigieg => 10 | Amy Klobuchar => 10 | Andrew Yang => 10"
+        + " | Julián Castro => 10 | Cory Booker => 10 | Joe Walsh => 10 |"
+        + " John Delaney => 10 | Michael Bennet => 10 | Deval Patrick => 10 |"
+        + " Tom Steyer => 10 | William Weld => 10 | "
+    )
+    results = voting_session.getResults(from_account(account))
+
+    actual = results
+
+    assert actual == expected, f"\nResults expected: {expected}\nBut were: {actual}"

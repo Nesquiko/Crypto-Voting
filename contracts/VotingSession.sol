@@ -54,5 +54,54 @@ contract VotingSession is Ownable {
         choicesMap[choice] = true;
     }
 
-    function getResults() public {}
+    function getResults() public view returns (string memory) {
+        string memory results = "";
+        for (uint256 i = 0; i < choices.length; i++) {
+            results = append(
+                results,
+                choices[i],
+                " => ",
+                uint2str(votesPerChoice[choices[i]]),
+                " | "
+            );
+        }
+
+        return results;
+    }
+
+    function append(
+        string memory a,
+        string memory b,
+        string memory c,
+        string memory d,
+        string memory e
+    ) internal pure returns (string memory) {
+        return string(abi.encodePacked(a, b, c, d, e));
+    }
+
+    function uint2str(uint256 _i)
+        internal
+        pure
+        returns (string memory _uintAsString)
+    {
+        if (_i == 0) {
+            return "0";
+        }
+        uint256 j = _i;
+        uint256 len;
+        while (j != 0) {
+            len++;
+            j /= 10;
+        }
+        bytes memory bstr = new bytes(len);
+        uint256 k = len;
+        while (_i != 0) {
+            k = k - 1;
+            uint8 temp = (48 + uint8(_i - (_i / 10) * 10));
+            bytes1 b1 = bytes1(temp);
+            bstr[k] = b1;
+            _i /= 10;
+        }
+        return string(bstr);
+    }
 }
