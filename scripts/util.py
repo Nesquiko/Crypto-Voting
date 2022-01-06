@@ -13,7 +13,7 @@ def from_account(account):
 
 
 def get_account(index=None, id=None):
-    if index:
+    if isinstance(index, int):
         return accounts[index]
     if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         return accounts[0]
