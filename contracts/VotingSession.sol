@@ -62,7 +62,7 @@ contract VotingSession is Ownable {
                 choices[i],
                 " => ",
                 uint2str(votesPerChoice[choices[i]]),
-                " | "
+                "\n"
             );
         }
 

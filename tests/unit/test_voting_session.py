@@ -307,7 +307,7 @@ def test_get_results():
     tx_vote.wait(1)
 
     expected = (
-        f"{choice} => {num_of_votes_owner} | {choice2} => {num_of_votes_non_owner} | "
+        f"{choice} => {num_of_votes_owner}\n{choice2} => {num_of_votes_non_owner}\n"
     )
     actual = voting_session.getResults(from_account(account))
 
@@ -365,15 +365,10 @@ def test_get_results_lot_of_choices():
             from_account(get_account(index=(i % 10))),
         )
 
-    expected = (
-        "Joe Biden => 10 | Donald Trump => 10 | Kanye West => 10 |"
-        + " Howie Hawkins => 10 | Jo Jorgensen => 10 | Bernie Sanders => 10 |"
-        + " Elizabeth Warren => 10 | Michael Bloomberg => 10 | Kamala Harris =>"
-        + " 10 | Pete Buttigieg => 10 | Amy Klobuchar => 10 | Andrew Yang => 10"
-        + " | Julián Castro => 10 | Cory Booker => 10 | Joe Walsh => 10 |"
-        + " John Delaney => 10 | Michael Bennet => 10 | Deval Patrick => 10 |"
-        + " Tom Steyer => 10 | William Weld => 10 | "
-    )
+    expected = ""
+    for choice in choices:
+        expected += f"{choice} => 10\n"
+
     results = voting_session.getResults(from_account(account))
 
     actual = results
