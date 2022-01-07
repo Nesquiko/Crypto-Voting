@@ -572,7 +572,7 @@ def test_get_results_lot_of_choices():
         tx.wait(1)
 
     for i in range(len(choices)):
-        tx_vote: TransactionReceipt = voting_session.vote(
+        voting_session.vote(
             choices[i],
             10,
             from_account(get_account(index=(i % 10))),
