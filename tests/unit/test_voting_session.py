@@ -232,6 +232,66 @@ def test_get_all_choices_zero_choices():
     assert actual == expected, f"\nResults expected: {expected}\nBut were: {actual}"
 
 
+def test_get_num_of_votes_for_user_no_votes():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) + 100
+    end = start + 100
+    num_votes = 3
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+    tx = voting_session.addChoice(choice, from_account(account))
+    tx.wait(1)
+
+    expected = 0
+    actual = voting_session.getNumOfVotesForUser(from_account(account))
+    assert actual == expected, f"\nResults expected: {expected}\nBut were: {actual}"
+
+
+def test_get_num_of_votes_for_user_():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) + 100
+    end = start + 100
+    num_votes = 3
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+    tx = voting_session.addChoice(choice, from_account(account))
+    tx.wait(1)
+
+    num_of_votes_owner = 2
+    tx_vote: TransactionReceipt = voting_session.vote(
+        choice, num_of_votes_owner, from_account(account)
+    )
+    tx_vote.wait(1)
+
+    expected = num_of_votes_owner
+    actual = voting_session.getNumOfVotesForUser(from_account(account))
+    assert actual == expected, f"\nResults expected: {expected}\nBut were: {actual}"
+
+
 def test_vote_owner_and_non_owner():
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()

@@ -36,6 +36,10 @@ contract VotingSession is Ownable {
         numOfVotesPerUser = _numOfVotesPerUser;
     }
 
+    function getNumOfVotesForUser() public view returns (uint8) {
+        return votesPerUser[msg.sender];
+    }
+
     function vote(string memory choice, uint8 numberOfVotes) public {
         require(choicesMap[choice], "Invalid choice.");
         require(
@@ -48,12 +52,11 @@ contract VotingSession is Ownable {
     }
 
     function addChoice(string memory choice) public onlyOwner {
+        require(block.timestamp < end, "This voting session already ended.");
         require(
             block.timestamp < start,
             "This voting session already started."
         );
-        require(block.timestamp < end, "This voting session already ended.");
-
         choices.push(choice);
         choicesMap[choice] = true;
     }
