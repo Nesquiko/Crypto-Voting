@@ -41,6 +41,11 @@ contract VotingSession is Ownable {
     }
 
     function vote(string memory choice, uint8 numberOfVotes) public {
+        require(block.timestamp < end, "This voting session already ended.");
+        require(
+            block.timestamp >= start,
+            "This voting session did not start yet."
+        );
         require(choicesMap[choice], "Invalid choice.");
         require(
             votesPerUser[msg.sender] + numberOfVotes <= numOfVotesPerUser,

@@ -342,6 +342,60 @@ def test_vote_owner_and_non_owner():
     )
 
 
+def test_vote_before_start():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) + 100
+    end = start + 100
+    num_votes = 3
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+    tx = voting_session.addChoice(choice, from_account(account))
+    tx.wait(1)
+
+    num_of_votes_owner = 2
+    with brownie.reverts("This voting session did not start yet."):
+        voting_session.vote(choice, num_of_votes_owner, from_account(account))
+
+
+def test_vote_after_end():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) + 1
+    end = start
+    num_votes = 3
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+    tx = voting_session.addChoice(choice, from_account(account))
+    tx.wait(1)
+
+    num_of_votes_owner = 2
+    with brownie.reverts("This voting session already ended."):
+        voting_session.vote(choice, num_of_votes_owner, from_account(account))
+
+
 def test_vote_invalid_choice():
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
