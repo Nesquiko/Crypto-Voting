@@ -109,6 +109,30 @@ def test_add_choice_from_non_owner():
         tx = voting_session.addChoice(choice, from_account(non_owner))
 
 
+def test_add_choice_after_start():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time())
+    end = start + 500
+    num_votes = 2
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+
+    with brownie.reverts("This voting session already started."):
+        tx = voting_session.addChoice(choice, from_account(account))
+
+
 def test_add_choice_after_end():
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
@@ -131,6 +155,80 @@ def test_add_choice_after_end():
 
     with brownie.reverts("This voting session already ended."):
         tx = voting_session.addChoice(choice, from_account(account))
+
+
+def test_get_all_choices():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) + 10000000
+    end = start + 100000000
+    choices = [
+        "Joe Biden",
+        "Donald Trump",
+        "Kanye West",
+        "Howie Hawkins",
+        "Jo Jorgensen",
+        "Bernie Sanders",
+        "Elizabeth Warren",
+        "Michael Bloomberg",
+        "Kamala Harris",
+        "Pete Buttigieg",
+        "Amy Klobuchar",
+        "Andrew Yang",
+        "Julián Castro",
+        "Cory Booker",
+        "Joe Walsh",
+        "John Delaney",
+        "Michael Bennet",
+        "Deval Patrick",
+        "Tom Steyer",
+        "William Weld",
+    ]
+    num_votes = 2
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    for choice in choices:
+        tx = voting_session.addChoice(choice, from_account(account))
+        tx.wait(1)
+
+    actual = voting_session.getAllChoices(from_account(account))
+    for i in range(len(choices)):
+        assert (
+            actual[i] == choices[i]
+        ), f"\nResults expected: {choices[i]}\nBut were: {actual[i]}"
+
+
+def test_get_all_choices_zero_choices():
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) + 10000000
+    end = start + 100000000
+    num_votes = 2
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    expected = ()
+    actual = voting_session.getAllChoices(from_account(account))
+    assert actual == expected, f"\nResults expected: {expected}\nBut were: {actual}"
 
 
 def test_vote_owner_and_non_owner():

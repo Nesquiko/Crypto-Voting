@@ -48,10 +48,18 @@ contract VotingSession is Ownable {
     }
 
     function addChoice(string memory choice) public onlyOwner {
+        require(
+            block.timestamp < start,
+            "This voting session already started."
+        );
         require(block.timestamp < end, "This voting session already ended.");
 
         choices.push(choice);
         choicesMap[choice] = true;
+    }
+
+    function getAllChoices() public view returns (string[] memory) {
+        return choices;
     }
 
     function getResults() public view returns (string memory) {
