@@ -54,8 +54,8 @@ def test_add_choices_from_owner():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time())
-    end = start + 10000000
+    start = int(time.time()) + 100
+    end = start + 100
     num_votes = 2
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -90,7 +90,7 @@ def test_add_choice_from_non_owner():
 
     symbol = "Presidential Vote"
     start = int(time.time())
-    end = start + 10000000
+    end = start + 100
     num_votes = 2
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -115,7 +115,7 @@ def test_add_choice_after_start():
 
     symbol = "Presidential Vote"
     start = int(time.time())
-    end = start + 500
+    end = start + 100
     num_votes = 2
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -138,8 +138,8 @@ def test_add_choice_after_end():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) - 100
-    end = start - 50
+    start = int(time.time())
+    end = start
     num_votes = 2
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -153,6 +153,7 @@ def test_add_choice_after_end():
 
     choice = "Joe Biden"
 
+    # wait until end of VotingSession
     with brownie.reverts("This voting session already ended."):
         tx = voting_session.addChoice(choice, from_account(account))
 
@@ -162,8 +163,8 @@ def test_get_all_choices():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 10000000
-    end = start + 100000000
+    start = int(time.time()) + 100
+    end = start + 100
     choices = [
         "Joe Biden",
         "Donald Trump",
@@ -213,8 +214,8 @@ def test_get_all_choices_zero_choices():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 10000000
-    end = start + 100000000
+    start = int(time.time()) + 100
+    end = start + 100
     num_votes = 2
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -236,8 +237,8 @@ def test_vote_owner_and_non_owner():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time())
-    end = start + 10000000
+    start = int(time.time()) + 100
+    end = start + 100
     num_votes = 3
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -287,7 +288,7 @@ def test_vote_invalid_choice():
 
     symbol = "Presidential Vote"
     start = int(time.time())
-    end = start + 10000000
+    end = start + 100
     num_votes = 3
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -311,8 +312,8 @@ def test_vote_exceeded_num_of_votes_per_user_first_vote():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time())
-    end = start + 10000000
+    start = int(time.time()) + 100
+    end = start + 100
     num_votes = 3
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -338,8 +339,8 @@ def test_vote_exceeded_num_of_votes_per_user_second_vote():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time())
-    end = start + 10000000
+    start = int(time.time()) + 100
+    end = start + 100
     num_votes = 3
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -370,8 +371,8 @@ def test_get_results():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time())
-    end = start + 10000000
+    start = int(time.time()) + 100
+    end = start + 100
     num_votes = 3
 
     tx: TransactionReceipt = voting_hub.createVotingSession(
@@ -417,8 +418,8 @@ def test_get_results_lot_of_choices():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time())
-    end = start + 10000000
+    start = int(time.time()) + 100
+    end = start + 100
     choices = [
         "Joe Biden",
         "Donald Trump",
