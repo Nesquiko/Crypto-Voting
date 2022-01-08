@@ -1,5 +1,5 @@
 import time
-
+from datetime import datetime
 import brownie
 import pytest
 from brownie import VotingSession, exceptions
@@ -259,12 +259,12 @@ def test_get_num_of_votes_for_user_no_votes():
     assert actual == expected, f"\nResults expected: {expected}\nBut were: {actual}"
 
 
-def test_get_num_of_votes_for_user_():
+def test_get_num_of_votes_for_user():
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 100
+    start = int(time.time()) + 2
     end = start + 100
     num_votes = 3
 
@@ -282,6 +282,7 @@ def test_get_num_of_votes_for_user_():
     tx.wait(1)
 
     num_of_votes_owner = 2
+    time.sleep(2)
     tx_vote: TransactionReceipt = voting_session.vote(
         choice, num_of_votes_owner, from_account(account)
     )
@@ -297,7 +298,7 @@ def test_vote_owner_and_non_owner():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 100
+    start = int(time.time()) + 2
     end = start + 100
     num_votes = 3
 
@@ -314,6 +315,7 @@ def test_vote_owner_and_non_owner():
     tx = voting_session.addChoice(choice, from_account(account))
     tx.wait(1)
 
+    time.sleep(2)
     num_of_votes_owner = 2
     tx_vote: TransactionReceipt = voting_session.vote(
         choice, num_of_votes_owner, from_account(account)
@@ -374,7 +376,7 @@ def test_vote_after_end():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 1
+    start = int(time.time()) + 2
     end = start
     num_votes = 3
 
@@ -391,6 +393,7 @@ def test_vote_after_end():
     tx = voting_session.addChoice(choice, from_account(account))
     tx.wait(1)
 
+    time.sleep(2)
     num_of_votes_owner = 2
     with brownie.reverts("This voting session already ended."):
         voting_session.vote(choice, num_of_votes_owner, from_account(account))
@@ -426,7 +429,7 @@ def test_vote_exceeded_num_of_votes_per_user_first_vote():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 100
+    start = int(time.time()) + 2
     end = start + 100
     num_votes = 3
 
@@ -443,6 +446,7 @@ def test_vote_exceeded_num_of_votes_per_user_first_vote():
     tx = voting_session.addChoice(choice, from_account(account))
     tx.wait(1)
 
+    time.sleep(2)
     num_of_votes_owner = num_votes + 1
     with brownie.reverts("Exceeded number of votes per user."):
         voting_session.vote(choice, num_of_votes_owner, from_account(account))
@@ -453,7 +457,7 @@ def test_vote_exceeded_num_of_votes_per_user_second_vote():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 100
+    start = int(time.time()) + 2
     end = start + 100
     num_votes = 3
 
@@ -470,6 +474,7 @@ def test_vote_exceeded_num_of_votes_per_user_second_vote():
     tx = voting_session.addChoice(choice, from_account(account))
     tx.wait(1)
 
+    time.sleep(2)
     num_of_votes_owner = num_votes
     tx_vote: TransactionReceipt = voting_session.vote(
         choice, num_of_votes_owner, from_account(account)
@@ -485,7 +490,7 @@ def test_get_results():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 100
+    start = int(time.time()) + 2
     end = start + 100
     num_votes = 3
 
@@ -506,6 +511,7 @@ def test_get_results():
     tx = voting_session.addChoice(choice2, from_account(account))
     tx.wait(1)
 
+    time.sleep(2)
     num_of_votes_owner = 2
     tx_vote: TransactionReceipt = voting_session.vote(
         choice, num_of_votes_owner, from_account(account)
@@ -532,7 +538,7 @@ def test_get_results_lot_of_choices():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 100
+    start = int(time.time()) + 3
     end = start + 100
     choices = [
         "Joe Biden",
@@ -571,6 +577,7 @@ def test_get_results_lot_of_choices():
         tx = voting_session.addChoice(choice, from_account(account))
         tx.wait(1)
 
+    time.sleep(1)
     for i in range(len(choices)):
         voting_session.vote(
             choices[i],
