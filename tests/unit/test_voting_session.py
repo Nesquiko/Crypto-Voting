@@ -592,7 +592,7 @@ def test_get_results_lot_of_choices():
     voting_hub: ProjectContract = deploy_voting_hub()
 
     symbol = "Presidential Vote"
-    start = int(time.time()) + 3
+    start = int(time.time()) + 4
     end = start + 100
     choices = [
         "Joe Biden",
@@ -631,7 +631,7 @@ def test_get_results_lot_of_choices():
         tx = voting_session.addChoice(choice, from_account(account))
         tx.wait(1)
 
-    time.sleep(1)
+    time.sleep(2)
     for i in range(len(choices)):
         voting_session.vote(
             choices[i],
