@@ -1,13 +1,18 @@
 import time
 
 from brownie.network.contract import ProjectContract
+from brownie import network
 from brownie.network.transaction import TransactionReceipt
 
+import pytest
 from scripts.deploy_voting_hub import deploy_voting_hub
-from scripts.util import from_account, get_account
+from scripts.util import from_account, get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 
 
 def test_create_voting_session():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -27,6 +32,9 @@ def test_create_voting_session():
 
 
 def test_addresses_of_voting_sessions():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -58,6 +66,9 @@ def test_addresses_of_voting_sessions():
 
 
 def test_get_all_voting_session_symbols():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 

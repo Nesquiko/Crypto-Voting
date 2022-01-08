@@ -3,14 +3,18 @@ from datetime import datetime
 import brownie
 import pytest
 from brownie import VotingSession, exceptions
+from brownie import network
 from brownie.network.contract import Contract, ProjectContract
 from brownie.network.transaction import TransactionReceipt
 
 from scripts.deploy_voting_hub import deploy_voting_hub
-from scripts.util import from_account, get_account
+from scripts.util import from_account, get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
 
 
 def test_voting_session_creation():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -35,6 +39,9 @@ def test_voting_session_creation():
 
 
 def test_voting_session_creation_zero_num_votes_per_user():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -50,6 +57,9 @@ def test_voting_session_creation_zero_num_votes_per_user():
 
 
 def test_add_choices_from_owner():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -85,6 +95,9 @@ def test_add_choices_from_owner():
 
 
 def test_add_choice_from_non_owner():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -110,6 +123,9 @@ def test_add_choice_from_non_owner():
 
 
 def test_add_choice_after_start():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -134,6 +150,9 @@ def test_add_choice_after_start():
 
 
 def test_add_choice_after_end():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -159,6 +178,9 @@ def test_add_choice_after_end():
 
 
 def test_get_all_choices():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -210,6 +232,9 @@ def test_get_all_choices():
 
 
 def test_get_all_choices_zero_choices():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -233,6 +258,9 @@ def test_get_all_choices_zero_choices():
 
 
 def test_get_num_of_votes_for_user_no_votes():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -260,6 +288,9 @@ def test_get_num_of_votes_for_user_no_votes():
 
 
 def test_get_num_of_votes_for_user():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -294,6 +325,9 @@ def test_get_num_of_votes_for_user():
 
 
 def test_vote_owner_and_non_owner():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -345,6 +379,9 @@ def test_vote_owner_and_non_owner():
 
 
 def test_vote_before_start():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -372,6 +409,9 @@ def test_vote_before_start():
 
 
 def test_vote_after_end():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -400,6 +440,9 @@ def test_vote_after_end():
 
 
 def test_vote_invalid_choice():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -425,6 +468,9 @@ def test_vote_invalid_choice():
 
 
 def test_vote_exceeded_num_of_votes_per_user_first_vote():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -453,6 +499,9 @@ def test_vote_exceeded_num_of_votes_per_user_first_vote():
 
 
 def test_vote_exceeded_num_of_votes_per_user_second_vote():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -486,6 +535,9 @@ def test_vote_exceeded_num_of_votes_per_user_second_vote():
 
 
 def test_get_results():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
@@ -534,6 +586,9 @@ def test_get_results():
 
 
 def test_get_results_lot_of_choices():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
     account = get_account()
     voting_hub: ProjectContract = deploy_voting_hub()
 
