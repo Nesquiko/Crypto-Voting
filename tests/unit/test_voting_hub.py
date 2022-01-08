@@ -1,12 +1,12 @@
 import time
 
-from brownie.network.contract import ProjectContract
+import pytest
 from brownie import network
+from brownie.network.contract import ProjectContract
 from brownie.network.transaction import TransactionReceipt
 
-import pytest
 from scripts.deploy_voting_hub import deploy_voting_hub
-from scripts.util import from_account, get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
+from scripts.util import LOCAL_BLOCKCHAIN_ENVIRONMENTS, from_account, get_account
 
 
 def test_create_voting_session():

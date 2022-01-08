@@ -1,7 +1,6 @@
 from brownie import VotingHub, config, network
 from brownie.network.contract import ProjectContract
 
-
 from scripts.util import from_account, get_account
 
 

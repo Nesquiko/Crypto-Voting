@@ -1,14 +1,13 @@
 import time
-from datetime import datetime
+
 import brownie
 import pytest
-from brownie import VotingSession, exceptions
-from brownie import network
+from brownie import VotingSession, exceptions, network
 from brownie.network.contract import Contract, ProjectContract
 from brownie.network.transaction import TransactionReceipt
 
 from scripts.deploy_voting_hub import deploy_voting_hub
-from scripts.util import from_account, get_account, LOCAL_BLOCKCHAIN_ENVIRONMENTS
+from scripts.util import LOCAL_BLOCKCHAIN_ENVIRONMENTS, from_account, get_account
 
 
 def test_voting_session_creation():
