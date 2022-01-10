@@ -176,6 +176,35 @@ def test_add_choice_after_end():
         tx = voting_session.addChoice(choice, from_account(account))
 
 
+def test_add_duplicate_choice():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    symbol = "Presidential Vote"
+    start = int(time.time()) + 100
+    end = start + 100
+    num_votes = 2
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    voting_session = Contract.from_abi(
+        "VotingSession", tx.return_value, VotingSession.abi
+    )
+
+    choice = "Joe Biden"
+    tx = voting_session.addChoice(choice, from_account(account))
+    tx.wait(1)
+
+    with brownie.reverts("This choice already exists."):
+        tx = voting_session.addChoice(choice, from_account(account))
+
+
 def test_get_all_choices():
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local environment testing!")
