@@ -62,6 +62,8 @@ contract VotingSession is Ownable {
             block.timestamp < start,
             "This voting session already started."
         );
+        require(!choicesMap[choice], "This choice already exists.");
+
         choices.push(choice);
         choicesMap[choice] = true;
     }
