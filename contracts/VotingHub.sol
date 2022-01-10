@@ -15,6 +15,11 @@ contract VotingHub {
         uint256 end,
         uint8 numOfVotes
     ) public returns (address) {
+        require(
+            addressesOfVotingSessions[symbol] == address(0),
+            "Voting session with this symbol already exists."
+        );
+
         VotingSession newVotingSession = new VotingSession(
             symbol,
             start,

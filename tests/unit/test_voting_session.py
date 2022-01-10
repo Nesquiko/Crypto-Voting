@@ -37,6 +37,29 @@ def test_voting_session_creation():
     assert voting_session.numOfVotesPerUser() == num_votes
 
 
+def test_voting_session_creation_duplicate():
+    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        pytest.skip("Only for local environment testing!")
+
+    account = get_account()
+    voting_hub: ProjectContract = deploy_voting_hub()
+
+    expected_symbol = "TEST"
+    start = int(time.time())
+    end = start + 10
+    num_votes = 2
+
+    tx: TransactionReceipt = voting_hub.createVotingSession(
+        expected_symbol, start, end, num_votes, from_account(account)
+    )
+    tx.wait(1)
+
+    with brownie.reverts("Voting session with this symbol already exists."):
+        tx: TransactionReceipt = voting_hub.createVotingSession(
+            expected_symbol, start, end, num_votes, from_account(account)
+        )
+
+
 def test_voting_session_creation_zero_num_votes_per_user():
     if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
         pytest.skip("Only for local environment testing!")
